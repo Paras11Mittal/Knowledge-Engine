@@ -1,0 +1,229 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NAUTILUS MAGAZINE SYSTEM VARIABLES */
+:root[data-theme="dark"] {
+  --bg-primary: #0b0d12;
+  --bg-primary-alpha: rgba(11, 13, 18, 0.85);
+  --bg-secondary: #131722;
+  --bg-card: #161b26;
+  --text-primary: #f0f3f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #78859b;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(245, 158, 11, 0.3);
+  --accent-amber: #f59e0b;
+  --accent-blue: #3b82f6;
+  --accent-emerald: #10b981;
+}
+
+:root[data-theme="light"] {
+  --bg-primary: #fcfbf7;
+  --bg-primary-alpha: rgba(252, 251, 247, 0.88);
+  --bg-secondary: #f3f0e6;
+  --bg-card: #ffffff;
+  --text-primary: #18181b;
+  --text-secondary: #3f3f46;
+  --text-muted: #71717a;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-hover: rgba(217, 119, 6, 0.4);
+  --accent-amber: #d97706;
+  --accent-blue: #2563eb;
+  --accent-emerald: #059669;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Color Helper Utility Classes */
+.bg-primary { background-color: var(--bg-primary); }
+.bg-primary-alpha { background-color: var(--bg-primary-alpha); }
+.bg-secondary { background-color: var(--bg-secondary); }
+.bg-card { background-color: var(--bg-card); }
+
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-amber-500 { color: var(--accent-amber); }
+
+.border-subtle { border-color: var(--border-subtle); }
+.border-amber-500 { border-color: var(--accent-amber); }
+
+/* Badges */
+.badge-amber {
+  background-color: rgba(245, 158, 11, 0.12);
+  color: var(--accent-amber);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  padding: 0.25rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-pillar {
+  background-color: var(--bg-secondary);
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Buttons */
+.btn-secondary {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+.btn-secondary:hover {
+  border-color: var(--border-hover);
+  color: var(--accent-amber);
+}
+
+/* NAUTILUS PROSE EDITORIAL STYLING */
+.prose-nautilus {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.125rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+
+.prose-nautilus h1, 
+.prose-nautilus h2, 
+.prose-nautilus h3, 
+.prose-nautilus h4 {
+  font-family: 'Playfair Display', serif;
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose-nautilus h1 { font-size: 2.25rem; }
+.prose-nautilus h2 { font-size: 1.75rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem; }
+.prose-nautilus h3 { font-size: 1.35rem; }
+
+.prose-nautilus p {
+  margin-bottom: 1.5rem;
+}
+
+/* Blockquotes & TL;DR */
+.prose-nautilus blockquote {
+  font-style: italic;
+  border-left: 4px solid var(--accent-amber);
+  background-color: rgba(245, 158, 11, 0.05);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 12px 12px 0;
+  margin: 2rem 0;
+  color: var(--text-primary);
+}
+
+/* Lists */
+.prose-nautilus ul, .prose-nautilus ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.prose-nautilus ul { list-style-type: disc; }
+.prose-nautilus ol { list-style-type: decimal; }
+
+.prose-nautilus li {
+  margin-bottom: 0.5rem;
+}
+
+/* Links */
+.prose-nautilus a {
+  color: var(--accent-amber);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: opacity 0.2s;
+}
+.prose-nautilus a:hover {
+  opacity: 0.8;
+}
+
+/* Code & ASCII Diagrams */
+.prose-nautilus pre {
+  background-color: #0d1117;
+  color: #e6edf3;
+  padding: 1.25rem;
+  border-radius: 12px;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  border: 1px solid var(--border-subtle);
+  margin: 2rem 0;
+}
+
+.prose-nautilus code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  background-color: var(--bg-secondary);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  color: var(--accent-amber);
+}
+
+/* Custom Callout Box Styling */
+.callout-box {
+  padding: 1.25rem;
+  border-radius: 12px;
+  margin: 1.75rem 0;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-card);
+}
+
+.callout-neuro {
+  border-left: 4px solid var(--accent-blue);
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.callout-vedic {
+  border-left: 4px solid var(--accent-amber);
+  background-color: rgba(245, 158, 11, 0.05);
+}
+
+.callout-protocol {
+  border-left: 4px solid var(--accent-emerald);
+  background-color: rgba(16, 185, 129, 0.05);
+}
+
+/* Tables */
+.prose-nautilus table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  font-size: 0.95rem;
+}
+
+.prose-nautilus th, .prose-nautilus td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-subtle);
+  text-align: left;
+}
+
+.prose-nautilus th {
+  background-color: var(--bg-secondary);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+
+/* Hide Scrollbar */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
