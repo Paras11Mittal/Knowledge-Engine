@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NAUTILUS — The Synthesized Mind, Leverage & Biopics Engine</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Playfair Display', 'Lora', 'Georgia', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            body: ['Lora', 'Georgia', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Playfair Display, Lora, Inter, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Marked.js for Markdown parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-primary text-primary transition-colors duration-300 min-h-screen">
+
+  <!-- Reading Progress Bar -->
+  <div id="reading-progress" class="fixed top-0 left-0 h-1 bg-amber-500 z-50 transition-all duration-150 w-0"></div>
+
+  <!-- Header Navigation -->
+  <header class="border-b border-subtle sticky top-0 bg-primary-alpha backdrop-blur-md z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" id="brand-logo" class="flex items-center gap-3 text-decoration-none group">
+        <div class="w-10 h-10 rounded-full border border-amber-500/40 flex items-center justify-center bg-amber-500/10 text-amber-500 font-serif font-bold text-lg group-hover:scale-105 transition-transform">
+          N
+        </div>
+        <div>
+          <div class="font-serif text-xl tracking-wider font-semibold uppercase text-primary">
+            NAUTILUS <span class="text-amber-500 font-sans font-light text-xs mx-1">KNOWLEDGE ENGINE</span>
+          </div>
+          <div class="text-[10px] tracking-widest text-muted uppercase">DR. K × NAVAL RAVIKANT × LUMINARIES & BIOPICS</div>
+        </div>
+      </a>
+
+      <!-- Portal Switcher -->
+      <div class="hidden lg:flex items-center gap-1 p-1 bg-secondary/80 rounded-full border border-subtle text-xs font-mono" id="portal-switcher">
+        <button data-portal="ALL" class="px-3.5 py-1.5 rounded-full transition-colors font-medium portal-btn active">
+          ALL (71)
+        </button>
+        <button data-portal="HealthyGamerGG" class="px-3.5 py-1.5 rounded-full transition-colors font-medium portal-btn">
+          🧘 DR. K (34)
+        </button>
+        <button data-portal="Naval Ravikant" class="px-3.5 py-1.5 rounded-full transition-colors font-medium portal-btn">
+          ⚓ NAVAL (22)
+        </button>
+        <button data-portal="Luminaries & Biopics" class="px-3.5 py-1.5 rounded-full transition-colors font-medium portal-btn">
+          🌟 BIOPICS (15)
+        </button>
+      </div>
+
+      <!-- Search & Filters -->
+      <div class="hidden md:flex items-center gap-4 flex-1 max-w-xs mx-4">
+        <div class="relative w-full">
+          <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"></i>
+          <input type="text" id="search-input" placeholder="Search Musk, Jobs, Stoicism, Leverage..." 
+                 class="w-full bg-secondary text-primary text-xs pl-9 pr-4 py-2 rounded-full border border-subtle focus:outline-none focus:border-amber-500/50 transition-colors">
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button id="btn-random" class="btn-secondary text-xs uppercase tracking-wider hidden sm:flex items-center gap-2" title="Random Article">
+          <i data-lucide="shuffle" class="w-3.5 h-3.5"></i>
+          <span>Random</span>
+        </button>
+        <button id="theme-toggle" class="p-2.5 rounded-full border border-subtle text-muted hover:text-primary transition-colors">
+          <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+          <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Portal Switcher -->
+    <div class="flex lg:hidden justify-center gap-1.5 py-2 border-t border-subtle bg-secondary/30 text-[11px] font-mono overflow-x-auto" id="mobile-portal-switcher">
+      <button data-portal="ALL" class="px-2.5 py-1 rounded-full border border-subtle portal-btn active">ALL (71)</button>
+      <button data-portal="HealthyGamerGG" class="px-2.5 py-1 rounded-full border border-subtle portal-btn">🧘 DR. K (34)</button>
+      <button data-portal="Naval Ravikant" class="px-2.5 py-1 rounded-full border border-subtle portal-btn">⚓ NAVAL (22)</button>
+      <button data-portal="Luminaries & Biopics" class="px-2.5 py-1 rounded-full border border-subtle portal-btn">🌟 BIOPICS (15)</button>
+    </div>
+
+    <!-- Sub-header Pillar Bar -->
+    <nav class="border-t border-subtle bg-secondary/50 overflow-x-auto no-scrollbar">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-1 py-2 text-xs font-medium uppercase tracking-wider whitespace-nowrap" id="pillar-filters">
+        <!-- Filter pills rendered dynamically -->
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main id="app-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    
+    <!-- HOME / MAGAZINE VIEW -->
+    <section id="view-home" class="space-y-16">
+
+      <!-- Hero Featured Issue -->
+      <article id="hero-article" class="relative rounded-2xl overflow-hidden border border-subtle bg-card shadow-2xl transition-all hover:border-amber-500/30">
+        <!-- Content rendered dynamically -->
+      </article>
+
+      <!-- Section Title -->
+      <div class="flex items-center justify-between border-b border-subtle pb-4">
+        <div>
+          <h2 class="font-serif text-2xl font-bold text-primary" id="archive-title">The Issue Archive</h2>
+          <p class="text-xs text-muted mt-1 uppercase tracking-widest" id="archive-subtitle">Master Syntheses across Psychology, Leverage, First Principles & Icon Biopics</p>
+        </div>
+        <div class="text-xs text-muted font-mono" id="article-count-badge">71 Essays</div>
+      </div>
+
+      <!-- Articles Grid -->
+      <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Cards rendered dynamically -->
+      </div>
+
+    </section>
+
+    <!-- READER VIEW -->
+    <section id="view-reader" class="hidden">
+      
+      <!-- Back Bar -->
+      <div class="flex items-center justify-between mb-8 border-b border-subtle pb-4">
+        <button id="btn-back" class="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-muted hover:text-amber-500 transition-colors">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Back to Issues Archive</span>
+        </button>
+        <div class="flex items-center gap-3">
+          <span id="reader-author-badge" class="badge-amber"></span>
+          <span id="reader-pillar-badge" class="badge-pillar"></span>
+          <span id="reader-time" class="text-xs font-mono text-muted"></span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        
+        <!-- Sidebar TOC (Desktop) -->
+        <aside class="hidden lg:block lg:col-span-3 sticky top-36 h-fit space-y-6">
+          <div class="p-5 rounded-xl border border-subtle bg-card text-xs space-y-3">
+            <div class="font-mono text-muted uppercase tracking-widest border-b border-subtle pb-2 font-semibold">Table of Contents</div>
+            <nav id="toc-container" class="space-y-2 text-muted">
+              <!-- TOC Links rendered dynamically -->
+            </nav>
+          </div>
+          
+          <div class="p-5 rounded-xl border border-subtle bg-card text-xs space-y-3">
+            <div class="font-mono text-muted uppercase tracking-widest border-b border-subtle pb-2 font-semibold">Target Struggle / Core Theme</div>
+            <p id="reader-target-struggle" class="text-secondary leading-relaxed italic"></p>
+          </div>
+        </aside>
+
+        <!-- Main Article Reading Column -->
+        <article class="lg:col-span-9 max-w-3xl mx-auto w-full">
+          
+          <!-- Article Title Header -->
+          <header class="mb-12 space-y-6">
+            <div class="text-xs font-mono text-amber-500 uppercase tracking-widest" id="reader-id">ESSAY</div>
+            <h1 id="reader-title" class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold leading-tight text-primary"></h1>
+            <div class="flex items-center gap-4 text-xs text-muted font-mono pt-4 border-t border-subtle" id="reader-author-meta">
+              <span id="reader-author-name">BY DR. ALOK KANOJIA, M.D., M.P.H.</span>
+              <span>•</span>
+              <span id="reader-kb-name">HEALTHYGAMERGG MASTER ESSAY</span>
+            </div>
+          </header>
+
+          <!-- Article Body -->
+          <div id="reader-body" class="prose prose-nautilus max-w-none">
+            <!-- Article Markdown Content rendered here -->
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-subtle mt-24 py-12 bg-secondary/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+      <div class="font-serif text-lg font-bold tracking-widest text-primary uppercase">NAUTILUS KNOWLEDGE ENGINE</div>
+      <p class="text-xs text-muted max-w-xl mx-auto">
+        A unified synthesis of Dr. Alok Kanojia's psychological frameworks, Naval Ravikant's first-principles leverage, and Iconic Biopics (Musk, Jobs, Marcus Aurelius, Munger, da Vinci, Tesla, Feynman, Buffett, Gandhi, Einstein, Sun Tzu, Lincoln, Buddha, Krishnamurti, Alexander).
+      </p>
+      <div class="text-[10px] font-mono text-muted uppercase tracking-widest">
+        HealthyGamerGG × Naval Ravikant × Luminaries & Biopics • Built for High Signal
+      </div>
+    </div>
+  </footer>
+
+  <!-- Load database script -->
+  <script src="articles_db.js"></script>
+  <!-- Main Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
