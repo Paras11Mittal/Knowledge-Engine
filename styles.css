@@ -1,229 +1,376 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* =========================================
+   NAUTILUS DESIGN SYSTEM
+   AGENTS.md-compliant. No slop.
+   ========================================= */
 
-/* NAUTILUS MAGAZINE SYSTEM VARIABLES */
+/* === THEME VARIABLES ===
+   Rule 2: Off-blacks, off-whites. No #000 or #FFF.
+   Borders: 1px solid rgba at low opacity.
+*/
 :root[data-theme="dark"] {
-  --bg-primary: #0b0d12;
-  --bg-primary-alpha: rgba(11, 13, 18, 0.85);
-  --bg-secondary: #131722;
-  --bg-card: #161b26;
-  --text-primary: #f0f3f9;
-  --text-secondary: #cbd5e1;
-  --text-muted: #78859b;
+  --bg-primary: #0A0A0A;
+  --bg-primary-alpha: rgba(10, 10, 10, 0.65);
+  --bg-secondary: rgba(255, 255, 255, 0.04);
+  --bg-card: #111111;
+
+  --text-primary: #EDEDED;
+  --text-secondary: #A1A1AA; /* zinc-400 */
+  --text-muted: #71717A; /* zinc-500 */
+
   --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(245, 158, 11, 0.3);
-  --accent-amber: #f59e0b;
-  --accent-blue: #3b82f6;
-  --accent-emerald: #10b981;
+  --border-hover: rgba(255, 255, 255, 0.15);
+
+  --input-border: rgba(255, 255, 255, 0.12);
+  --input-bg: rgba(255, 255, 255, 0.03);
+
+  /* Rule 4: High-contrast CTAs. Solid light bg, dark text. */
+  --cta-bg: #EDEDED;
+  --cta-text: #111111;
+  --cta-hover: #DEDEDE;
 }
 
 :root[data-theme="light"] {
-  --bg-primary: #fcfbf7;
-  --bg-primary-alpha: rgba(252, 251, 247, 0.88);
-  --bg-secondary: #f3f0e6;
-  --bg-card: #ffffff;
-  --text-primary: #18181b;
-  --text-secondary: #3f3f46;
-  --text-muted: #71717a;
-  --border-subtle: rgba(0, 0, 0, 0.08);
-  --border-hover: rgba(217, 119, 6, 0.4);
-  --accent-amber: #d97706;
-  --accent-blue: #2563eb;
-  --accent-emerald: #059669;
+  --bg-primary: #FAFAFA;
+  --bg-primary-alpha: rgba(250, 250, 250, 0.85);
+  --bg-secondary: #F4F4F5; /* zinc-100 */
+  --bg-card: #FFFFFF;
+
+  --text-primary: #18181B; /* zinc-900 */
+  --text-secondary: #52525B; /* zinc-600 */
+  --text-muted: #71717A; /* zinc-500 */
+
+  --border-subtle: #E4E4E7; /* zinc-200 */
+  --border-hover: #A1A1AA; /* zinc-400 */
+
+  --input-border: #D4D4D8; /* zinc-300 */
+  --input-bg: #F4F4F5;
+
+  --cta-bg: #18181B;
+  --cta-text: #FAFAFA;
+  --cta-hover: #27272A; /* zinc-800 */
 }
 
+/* === BASE === */
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Color Helper Utility Classes */
+/* === UTILITY COLOR CLASSES === */
 .bg-primary { background-color: var(--bg-primary); }
-.bg-primary-alpha { background-color: var(--bg-primary-alpha); }
-.bg-secondary { background-color: var(--bg-secondary); }
+.bg-background { background-color: var(--bg-primary); }
 .bg-card { background-color: var(--bg-card); }
+.bg-background-secondary { background-color: var(--bg-secondary); }
+
+/* Rule 2: Glassmorphism for sticky elements */
+.bg-primary-alpha {
+  background-color: var(--bg-primary-alpha);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+}
 
 .text-primary { color: var(--text-primary); }
 .text-secondary { color: var(--text-secondary); }
 .text-muted { color: var(--text-muted); }
-.text-amber-500 { color: var(--accent-amber); }
-
 .border-subtle { border-color: var(--border-subtle); }
-.border-amber-500 { border-color: var(--accent-amber); }
 
-/* Badges */
-.badge-amber {
-  background-color: rgba(245, 158, 11, 0.12);
-  color: var(--accent-amber);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  padding: 0.25rem 0.6rem;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  font-family: 'JetBrains Mono', monospace;
+/* === TYPOGRAPHY (Rule 3) ===
+   Strict rem scale. Weight + tracking + contrast for hierarchy.
+*/
+.text-display-hero {
+  font-size: clamp(3rem, 5vw, 4rem);
   font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--text-primary);
 }
 
-.badge-pillar {
-  background-color: var(--bg-secondary);
+.text-section-heading {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.text-ui-body {
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0em;
+  color: var(--text-secondary);
+}
+
+.text-ui-micro {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   color: var(--text-muted);
-  border: 1px solid var(--border-subtle);
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.65rem;
-  font-family: 'JetBrains Mono', monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
-/* Buttons */
+/* === INTERACTIONS (Rule 5) ===
+   100ms ease-out hovers. scale(0.98) on click. No scale-up on hover.
+*/
+a, button, .interactive {
+  transition: all 100ms ease-out;
+}
+button:active, .interactive:active {
+  transform: scale(0.98);
+}
+
+/* Modal/Drawer transitions use spring-like deceleration */
+.transition-modal {
+  transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* === FOCUS (Rule 4) ===
+   Ban default browser outlines. Custom offset focus rings.
+*/
+*:focus {
+  outline: none;
+}
+.focus-ring:focus-visible,
+.ui-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 4px rgba(139, 92, 246, 0.6);
+}
+
+/* === FORM INPUTS (Rule 4) ===
+   Subtle border + structural background.
+*/
+.ui-input {
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+.ui-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* === BUTTONS ===
+   Rule 4: Primary CTAs are high-contrast, not camouflaged.
+*/
+.btn-primary {
+  background-color: var(--cta-bg);
+  color: var(--cta-text);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+}
+.btn-primary:hover {
+  background-color: var(--cta-hover);
+}
+
 .btn-secondary {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  transition: all 0.2s ease;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  cursor: pointer;
 }
 .btn-secondary:hover {
   border-color: var(--border-hover);
-  color: var(--accent-amber);
 }
 
-/* NAUTILUS PROSE EDITORIAL STYLING */
+/* === BADGES (Rule 1) ===
+   No colored left-border indicators. Subtle badge backgrounds + 6px status dots.
+*/
+.badge-neutral {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: var(--text-primary);
+  opacity: 0.5;
+}
+
+/* === PORTAL BUTTON ACTIVE STATE ===
+   Rule 1: No pastel sidebar slop. Neutral off-fills + font-weight.
+*/
+.portal-btn {
+  font-weight: 400;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.portal-btn:hover {
+  color: var(--text-primary);
+}
+.portal-btn.active {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+  font-weight: 500;
+}
+
+/* === CARDS (Rule 2, 4, 1) ===
+   12px outer radius. No shadows. 24px padding. No left-border indicators.
+*/
+.card-outer {
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-card);
+  padding: 24px;
+}
+.card-hover:hover {
+  border-color: var(--border-hover);
+}
+
+/* === PROSE / READER (Rules 1, 2, 3, 6) ===
+   No emoji. No colored left borders. Desaturated. Dense tables.
+*/
 .prose-nautilus {
-  font-family: 'Lora', Georgia, serif;
-  font-size: 1.125rem;
-  line-height: 1.85;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.7;
   color: var(--text-secondary);
 }
 
-.prose-nautilus h1, 
-.prose-nautilus h2, 
-.prose-nautilus h3, 
+.prose-nautilus h1,
+.prose-nautilus h2,
+.prose-nautilus h3,
 .prose-nautilus h4 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Inter', sans-serif;
   color: var(--text-primary);
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1.3;
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
 }
-
-.prose-nautilus h1 { font-size: 2.25rem; }
-.prose-nautilus h2 { font-size: 1.75rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.5rem; }
-.prose-nautilus h3 { font-size: 1.35rem; }
-
-.prose-nautilus p {
-  margin-bottom: 1.5rem;
+.prose-nautilus h1 { font-size: 2rem; }
+.prose-nautilus h2 {
+  font-size: 1.5rem;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
 }
+.prose-nautilus h3 { font-size: 1.125rem; }
 
-/* Blockquotes & TL;DR */
+.prose-nautilus p { margin-bottom: 1rem; }
+
+/* Blockquotes: no colored left border. Neutral card treatment. */
 .prose-nautilus blockquote {
-  font-style: italic;
-  border-left: 4px solid var(--accent-amber);
-  background-color: rgba(245, 158, 11, 0.05);
-  padding: 1.25rem 1.5rem;
-  border-radius: 0 12px 12px 0;
-  margin: 2rem 0;
+  font-style: normal;
+  border-left: none;
+  background-color: var(--bg-secondary);
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px 0;
   color: var(--text-primary);
+  font-size: 0.875rem;
+  border: 1px solid var(--border-subtle);
 }
 
-/* Lists */
 .prose-nautilus ul, .prose-nautilus ol {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   padding-left: 1.5rem;
 }
-
 .prose-nautilus ul { list-style-type: disc; }
 .prose-nautilus ol { list-style-type: decimal; }
+.prose-nautilus li { margin-bottom: 4px; }
 
-.prose-nautilus li {
-  margin-bottom: 0.5rem;
-}
-
-/* Links */
 .prose-nautilus a {
-  color: var(--accent-amber);
+  color: var(--text-primary);
   text-decoration: underline;
   text-underline-offset: 4px;
-  transition: opacity 0.2s;
 }
-.prose-nautilus a:hover {
-  opacity: 0.8;
-}
+.prose-nautilus a:hover { opacity: 0.7; }
 
-/* Code & ASCII Diagrams */
 .prose-nautilus pre {
-  background-color: #0d1117;
-  color: #e6edf3;
-  padding: 1.25rem;
-  border-radius: 12px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 16px;
+  border-radius: 8px;
   overflow-x: auto;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   line-height: 1.6;
   border: 1px solid var(--border-subtle);
-  margin: 2rem 0;
+  margin: 16px 0;
 }
 
 .prose-nautilus code {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.9em;
+  font-size: 0.85em;
   background-color: var(--bg-secondary);
-  padding: 0.15rem 0.4rem;
+  padding: 2px 6px;
   border-radius: 4px;
-  color: var(--accent-amber);
+  color: var(--text-primary);
 }
 
-/* Custom Callout Box Styling */
+/* Callout boxes: neutral. No colored left borders. */
 .callout-box {
-  padding: 1.25rem;
-  border-radius: 12px;
-  margin: 1.75rem 0;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 16px 0;
   border: 1px solid var(--border-subtle);
-  background-color: var(--bg-card);
+  background-color: var(--bg-secondary);
 }
 
-.callout-neuro {
-  border-left: 4px solid var(--accent-blue);
-  background-color: rgba(59, 130, 246, 0.05);
-}
-
-.callout-vedic {
-  border-left: 4px solid var(--accent-amber);
-  background-color: rgba(245, 158, 11, 0.05);
-}
-
-.callout-protocol {
-  border-left: 4px solid var(--accent-emerald);
-  background-color: rgba(16, 185, 129, 0.05);
-}
-
-/* Tables */
+/* Tables: Dense (Rule 6). 32-40px rows. Right-align numbers. tabular-nums. */
 .prose-nautilus table {
   width: 100%;
   border-collapse: collapse;
-  margin: 2rem 0;
-  font-size: 0.95rem;
+  margin: 16px 0;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
 }
-
 .prose-nautilus th, .prose-nautilus td {
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border-subtle);
+  padding: 8px 12px;
   text-align: left;
 }
-
-.prose-nautilus th {
+.prose-nautilus tr {
+  height: 36px;
+}
+/* Rule 6: No borders between rows. Hover uses full-bleed bg fill. */
+.prose-nautilus tbody tr:hover td {
   background-color: var(--bg-secondary);
-  font-family: 'Inter', sans-serif;
-  font-weight: 600;
+  border-radius: 6px;
+}
+.prose-nautilus th {
+  background-color: transparent;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.prose-nautilus td {
+  border-bottom: none;
 }
 
-/* Hide Scrollbar */
+/* === SCROLLBAR HIDE === */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* === RESPONSIVE (Rule 8) === */
+@media (max-width: 768px) {
+  .text-display-hero {
+    font-size: 2.25rem;
+  }
+  .card-outer {
+    padding: 16px;
+  }
+}
