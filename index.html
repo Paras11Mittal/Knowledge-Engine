@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NAUTILUS — The Synthesized Mind, Leverage & Biopics Engine</title>
 
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -34,7 +33,6 @@
       };
     </script>
 
-    <!-- Google Fonts: Inter, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -42,181 +40,255 @@
       rel="stylesheet"
     />
 
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Marked.js for Markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <!-- CSS (with cache-busting) -->
-    <link rel="stylesheet" href="styles.css?v=2" />
+    <link rel="stylesheet" href="styles.css?v=3" />
   </head>
-  <body class="bg-background text-primary transition-colors min-h-screen font-sans">
+  <body class="bg-background text-primary transition-colors font-sans">
+    <!-- Shell: full-viewport flex layout -->
+    <div class="layout-shell">
+      <!-- Mobile Top Bar -->
+      <header class="mobile-topbar">
+        <a href="#" class="brand-link interactive">
+          <div class="brand-mark">N</div>
+          <span class="text-sm font-medium tracking-tight text-primary"
+            >NAUTILUS</span
+          >
+        </a>
+        <button
+          id="mobile-menu-btn"
+          class="p-2 text-muted hover:text-primary transition-colors interactive"
+        >
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </header>
 
-    <!-- Reading Progress Bar -->
-    <div
-      id="reading-progress"
-      class="fixed top-0 left-0 h-1 bg-white/20 z-50 transition-all duration-150 w-0"
-    ></div>
+      <!-- Sidebar -->
+      <aside id="sidebar-nav" class="sidebar">
+        <!-- Brand (desktop only) -->
+        <div class="sidebar-brand">
+          <a href="#" class="brand-link interactive">
+            <div class="brand-mark">N</div>
+            <div>
+              <div class="text-sm font-medium tracking-tight text-primary">
+                NAUTILUS
+              </div>
+            </div>
+          </a>
+        </div>
 
-    <!-- Header Navigation -->
-    <header class="border-b border-subtle sticky top-0 bg-primary-alpha z-40">
-      <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 h-16 flex items-center justify-between">
-
-        <!-- Brand Logo -->
-        <a href="#" id="brand-logo" class="flex items-center gap-3 text-decoration-none group interactive">
-          <div class="w-8 h-8 rounded-lg border border-subtle flex items-center justify-center bg-background-secondary text-primary font-medium text-sm group-active:scale-95 transition-transform">
-            N
+        <!-- Scrollable nav body -->
+        <div class="sidebar-body no-scrollbar">
+          <!-- Search -->
+          <div class="relative w-full">
+            <i
+              data-lucide="search"
+              class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"
+            ></i>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search concepts..."
+              class="w-full ui-input text-xs pl-9 pr-4 py-2 focus-ring transition-colors"
+            />
           </div>
+
+          <!-- Portals -->
           <div>
-            <div class="text-sm font-medium tracking-tight text-primary">
-              NAUTILUS
-              <span class="text-muted font-mono text-xs ml-1">SYSTEM</span>
+            <div class="sidebar-label">Portals</div>
+            <div class="sidebar-group" id="portal-switcher">
+              <button data-portal="ALL" class="sidebar-item portal-btn active">
+                All Sources
+              </button>
+              <button
+                data-portal="HealthyGamerGG"
+                class="sidebar-item portal-btn"
+              >
+                Dr. K (HealthyGamerGG)
+              </button>
+              <button
+                data-portal="Naval Ravikant"
+                class="sidebar-item portal-btn"
+              >
+                Naval Ravikant
+              </button>
+              <button
+                data-portal="Luminaries & Biopics"
+                class="sidebar-item portal-btn"
+              >
+                Luminaries / Biopics
+              </button>
             </div>
           </div>
-        </a>
 
-        <!-- Portal Switcher (Desktop) -->
-        <div class="hidden lg:flex items-center gap-1 p-1 bg-background-secondary rounded-lg border border-subtle text-xs font-medium" id="portal-switcher">
-          <button data-portal="ALL" class="px-3 py-1.5 rounded-md transition-all portal-btn active">ALL</button>
-          <button data-portal="HealthyGamerGG" class="px-3 py-1.5 rounded-md transition-all portal-btn">DR. K</button>
-          <button data-portal="Naval Ravikant" class="px-3 py-1.5 rounded-md transition-all portal-btn">NAVAL</button>
-          <button data-portal="Luminaries & Biopics" class="px-3 py-1.5 rounded-md transition-all portal-btn">BIOPICS</button>
-        </div>
-
-        <!-- Search & Filters -->
-        <div class="hidden md:flex items-center gap-4 flex-1 max-w-xs mx-4">
-          <div class="relative w-full">
-            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"></i>
-            <input type="text" id="search-input" placeholder="Search concepts... (⌘K)" class="w-full ui-input text-xs pl-9 pr-4 py-2 focus-ring transition-colors" />
+          <!-- Pillar Filters -->
+          <div>
+            <div class="sidebar-label">Knowledge Pillars</div>
+            <div class="sidebar-group" id="pillar-filters">
+              <!-- Dynamically populated -->
+            </div>
           </div>
         </div>
 
-        <!-- Actions -->
-        <div class="flex items-center gap-3">
-          <button id="btn-random" class="btn-secondary px-3 py-1.5 flex flex-row items-center gap-2 h-8 interactive" title="Random Article">
-            <i data-lucide="shuffle" class="w-3.5 h-3.5"></i>
-            <span class="hidden sm:inline">Random</span>
+        <!-- Sidebar footer -->
+        <div class="sidebar-footer">
+          <button
+            id="btn-random"
+            class="btn-secondary sidebar-action-btn interactive"
+            title="Random Article"
+          >
+            <i data-lucide="shuffle" class="w-4 h-4"></i>
+            <span>Random</span>
           </button>
-          <button id="theme-toggle" class="w-8 h-8 flex items-center justify-center rounded-md border border-subtle text-muted hover:bg-background-secondary transition-colors interactive">
+          <button id="theme-toggle" class="sidebar-icon-btn interactive">
             <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
             <i data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
           </button>
         </div>
-      </div>
+      </aside>
 
-      <!-- Mobile Portal Switcher -->
-      <div class="flex lg:hidden justify-center gap-2 py-3 border-t border-subtle bg-background-secondary text-xs font-medium overflow-x-auto px-4" id="mobile-portal-switcher">
-        <button data-portal="ALL" class="px-3 py-1.5 rounded-md border border-subtle portal-btn active whitespace-nowrap min-h-[44px]">ALL</button>
-        <button data-portal="HealthyGamerGG" class="px-3 py-1.5 rounded-md border border-subtle portal-btn whitespace-nowrap min-h-[44px]">DR. K</button>
-        <button data-portal="Naval Ravikant" class="px-3 py-1.5 rounded-md border border-subtle portal-btn whitespace-nowrap min-h-[44px]">NAVAL</button>
-        <button data-portal="Luminaries & Biopics" class="px-3 py-1.5 rounded-md border border-subtle portal-btn whitespace-nowrap min-h-[44px]">BIOPICS</button>
-      </div>
+      <!-- Mobile Overlay -->
+      <div id="mobile-overlay" class="mobile-overlay"></div>
 
-      <!-- Sub-header Pillar Bar -->
-      <nav class="border-t border-subtle bg-background overflow-x-auto no-scrollbar">
-        <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 flex items-center gap-2 py-2 text-xs font-medium whitespace-nowrap" id="pillar-filters">
-          <!-- Filter pills rendered dynamically -->
-        </div>
-      </nav>
-    </header>
+      <!-- Main Content Area -->
+      <main class="main-content" id="scroll-container">
+        <!-- Reading Progress -->
+        <div id="reading-progress" class="reading-progress-bar"></div>
 
-    <!-- Main Container -->
-    <main id="app-container" class="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 py-8 md:py-12">
-      <!-- HOME / MAGAZINE VIEW -->
-      <section id="view-home" class="space-y-12">
-        <!-- Header Text -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-subtle pb-6 gap-4">
-          <div class="space-y-1">
-            <h2 class="text-display-hero m-0 leading-tight" id="archive-title">System Archive</h2>
-            <p class="text-ui-body max-w-xl" id="archive-subtitle">Master Syntheses across Psychology, Leverage, First Principles & Icon Biopics</p>
-          </div>
-          <div class="text-ui-micro" id="article-count-badge">71 Essays</div>
-        </div>
-
-        <!-- Hero Featured Issue -->
-        <article id="hero-article" class="card-outer card-hover cursor-pointer interactive">
-          <!-- Content rendered dynamically -->
-        </article>
-
-        <!-- Articles Grid -->
-        <div id="articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Cards rendered dynamically -->
-        </div>
-      </section>
-
-      <!-- READER VIEW -->
-      <section id="view-reader" class="hidden">
-        <!-- Back Bar -->
-        <div class="flex items-center justify-between mb-8 pb-4 border-b border-subtle">
-          <button id="btn-back" class="inline-flex items-center gap-2 text-ui-micro text-muted hover:text-primary h-8 min-h-[44px] md:min-h-0 interactive">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i>
-            <span>Return to Archive</span>
-          </button>
-          <div class="flex items-center gap-3">
-            <span id="reader-author-badge" class="badge-neutral"></span>
-            <span id="reader-pillar-badge" class="badge-neutral hidden sm:inline-block"></span>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <!-- Main Article Reading Column -->
-          <article class="lg:col-span-8 lg:col-start-1 w-full max-w-3xl">
-            <!-- Article Title Header -->
-            <header class="mb-10 space-y-4 border-b border-subtle pb-8">
-              <div class="flex items-center gap-2 text-ui-micro" id="reader-id">
-                <div class="status-dot"></div>
-                <span class="text-muted tracking-widest uppercase">System Entry</span>
+        <div class="content-frame" id="app-container">
+          <!-- HOME VIEW -->
+          <section id="view-home" class="space-y-10">
+            <!-- Page Header -->
+            <div
+              class="flex flex-col md:flex-row md:items-end justify-between border-b border-subtle pb-6 gap-4"
+            >
+              <div class="space-y-1">
+                <h2
+                  class="text-display-hero m-0 leading-tight"
+                  id="archive-title"
+                >
+                  NAUTILUS
+                </h2>
+                <p class="text-ui-body max-w-xl" id="archive-subtitle">
+                  Unified Syntheses across Psychology, Leverage, First
+                  Principles & Biopics
+                </p>
               </div>
-              <h1 id="reader-title" class="text-display-hero m-0"></h1>
-              <div class="flex flex-wrap items-center gap-2 text-ui-micro pt-2" id="reader-author-meta">
-                <span id="reader-author-name" class="font-medium text-primary"></span>
-                <span class="text-muted">•</span>
-                <span id="reader-kb-name" class="text-muted"></span>
-                <span class="text-muted">•</span>
-                <span id="reader-time" class="text-muted"></span>
-              </div>
-            </header>
-
-            <!-- Article Body -->
-            <div id="reader-body" class="prose prose-nautilus max-w-none">
-              <!-- Content -->
+              <div
+                class="text-ui-micro shrink-0"
+                id="article-count-badge"
+              ></div>
             </div>
-          </article>
 
-          <!-- Sidebar TOC & Context (Desktop) -->
-          <aside class="hidden lg:block lg:col-span-4 sticky top-32 h-fit space-y-6">
-            <div class="card-outer space-y-4">
-              <div class="text-ui-micro tracking-widest uppercase border-b border-subtle pb-2">Target Context</div>
-              <p id="reader-target-struggle" class="text-ui-body opacity-80"></p>
+            <!-- Hero Featured -->
+            <article
+              id="hero-article"
+              class="card-outer card-hover cursor-pointer interactive hidden"
+            >
+              <!-- Rendered dynamically -->
+            </article>
+
+            <!-- Articles List -->
+            <div id="articles-grid" class="article-list">
+              <!-- Rendered dynamically -->
             </div>
-            <div class="card-outer space-y-4">
-              <div class="text-ui-micro tracking-widest uppercase border-b border-subtle pb-2">Index Navigation</div>
-              <nav id="toc-container" class="space-y-2 flex flex-col">
-                <!-- TOC Links rendered dynamically -->
-              </nav>
+          </section>
+
+          <!-- READER VIEW -->
+          <section id="view-reader" class="hidden">
+            <!-- Back Bar -->
+            <div
+              class="flex items-center justify-between mb-8 pb-4 border-b border-subtle"
+            >
+              <button
+                id="btn-back"
+                class="inline-flex items-center gap-2 text-ui-micro text-muted hover:text-primary h-8 interactive"
+              >
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span>Return to Archive</span>
+              </button>
+              <span
+                id="reader-pillar-badge"
+                class="badge-neutral hidden sm:inline-block"
+              ></span>
             </div>
-          </aside>
-        </div>
-      </section>
-    </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-subtle mt-24 py-12 bg-background">
-      <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div class="space-y-2">
-          <div class="text-sm font-medium tracking-tight text-primary uppercase">Nautilus System</div>
-          <div class="text-ui-micro">High-signal architecture for psychological frameworks and leverage.</div>
-        </div>
-        <div class="md:text-right text-ui-micro space-y-1">
-          <div><a href="#" class="hover:text-primary transition-colors text-muted text-decoration-none">Dr. K Frameworks</a></div>
-          <div><a href="#" class="hover:text-primary transition-colors text-muted text-decoration-none">Naval Principles</a></div>
-          <div><a href="#" class="hover:text-primary transition-colors text-muted text-decoration-none">Biopic Index</a></div>
-        </div>
-      </div>
-    </footer>
+            <div class="reader-layout">
+              <!-- Main Column -->
+              <article class="reader-main">
+                <header class="mb-10 space-y-4 border-b border-subtle pb-8">
+                  <div
+                    class="flex items-center gap-2 text-ui-micro"
+                    id="reader-id"
+                  >
+                    <div class="status-dot"></div>
+                    <span
+                      class="text-muted tracking-widest uppercase"
+                      id="reader-kb-name"
+                    ></span>
+                  </div>
+                  <h1 id="reader-title" class="text-display-hero m-0"></h1>
+                  <div
+                    class="flex flex-wrap items-center gap-2 text-ui-micro pt-2"
+                    id="reader-author-meta"
+                  >
+                    <span
+                      id="reader-author-name"
+                      class="font-medium text-primary badge-neutral"
+                    ></span>
+                    <span class="text-muted">·</span>
+                    <span id="reader-time" class="text-muted"></span>
+                  </div>
+                </header>
+                <div
+                  id="reader-body"
+                  class="prose prose-nautilus max-w-none"
+                ></div>
+              </article>
 
-    <!-- JS (with cache-busting) -->
-    <script src="articles_db.js?v=2"></script>
-    <script src="app.js?v=2"></script>
+              <!-- Reader Sidebar -->
+              <aside class="reader-sidebar">
+                <div class="reader-sidebar-sticky">
+                  <div class="card-outer space-y-3 p-5">
+                    <div
+                      class="text-ui-micro tracking-widest uppercase border-b border-subtle pb-2 text-primary font-medium"
+                    >
+                      Context
+                    </div>
+                    <p
+                      id="reader-target-struggle"
+                      class="text-ui-body opacity-80 leading-relaxed"
+                    ></p>
+                  </div>
+                  <div class="card-outer space-y-3 p-5">
+                    <div
+                      class="text-ui-micro tracking-widest uppercase border-b border-subtle pb-2 text-primary font-medium"
+                    >
+                      Index
+                    </div>
+                    <nav id="toc-container" class="toc-nav no-scrollbar"></nav>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <!-- Footer -->
+          <footer class="content-footer">
+            <div class="text-sm font-medium tracking-tight text-primary">
+              NAUTILUS SYSTEM
+            </div>
+            <div class="text-ui-micro mt-1">
+              High-signal architecture for psychological frameworks and
+              leverage.
+            </div>
+          </footer>
+        </div>
+      </main>
+    </div>
+
+    <script src="articles_db.js?v=3"></script>
+    <script src="app.js?v=3"></script>
   </body>
 </html>
